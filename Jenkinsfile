@@ -8,19 +8,18 @@ pipeline {
         GIT_TARGET_BRANCH = 'main'
         GIT_REPOSITORY_URL = 'https://github.com/hspark1217/fast'
         GIT_CREDENTIONALS_ID = 'git_cre'
-
-  
+        
         GIT_EMAIL = 'resberg@gmail.com'
         GIT_NAME = 'hspark1217'
-        GIT_REPOSITORY_DEP = 'git@github.com:hspark/deployment.git'
+        GIT_REPOSITORY_DEP = 'git@github.com:hspark1217/deployment.git'
 
-        // AWS ECR
+        // AWS ECR 정보. 본인껄로 넣으세요!!
         AWS_ECR_CREDENTIAL_ID = 'aws_cre'
-        AWS_ECR_URI = '023490709500.dkr.ecr.ap-northeast-2.amazonaws.com'
-        AWS_ECR_IMAGE_NAME = 'fast' //레포지토리 이름
+        AWS_ECR_URI = '023490709500.dkr.ecr.ap-northeast-2.amazonaws.com' // 레지스트리주소
+        AWS_ECR_IMAGE_NAME = 'fast' // 레포지토리이름.
         AWS_REGION = 'ap-northeast-2'
         
-       }
+    }
 
     stages {
         // 첫번째 스테이지 : 초기화.
@@ -55,14 +54,14 @@ pipeline {
                     '''
                 }
                 // 명령어가 많아질것같아서 스크립트 블록을 추가.
-                // BUILD_Number = Jenkins가 제공해주는 변수.
+                // BUILD_NUMBER = 젠킨스가 제공해주는 변수.
             }
         }
 
 
         stage('4.Push to ECR') {
             steps {
-              // aws credential 플러그인을 설치해서 사용 할 수 있는 함수. aws configure 와 같은 기능.
+              // aws credential 플러그인을 설치해서 사용할 수 있는 함수. aws configure와 같은 기능.
               withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: "${AWS_ECR_CREDENTIAL_ID}"]]) {
                     script {
                         sh '''
@@ -124,6 +123,7 @@ pipeline {
                 }
             }
         }
+
 
 
 
